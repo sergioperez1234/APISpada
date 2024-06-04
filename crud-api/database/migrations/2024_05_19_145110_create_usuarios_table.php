@@ -18,8 +18,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('direccion');
             $table->unsignedInteger('telefono');
-            $table->unsignedInteger('tipoUsuario');
-            $table->foreign('tipoUsuario')->references('id')->on('tipoUsuario');
+            $table->boolean('tipoUsuario');
         });
     }
 

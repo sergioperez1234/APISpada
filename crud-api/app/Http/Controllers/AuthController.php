@@ -43,7 +43,18 @@ class AuthController extends Controller
 
 public function login(Request $request)
 {
-    $credentials = $request->only('email', 'password');
+    $validator = Validator::make($request->all(), [
+        'email' => 'required|string|email|max:255',
+        'password' => 'required|string|min:6|max:255',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'status' => 400,
+            'errors' => $validator->errors(),
+            'message' => 'Error de validación de los datos'
+        ], 400);
+    }
 
     try {
         // Busca al usuario por su dirección de correo electrónico
@@ -55,8 +66,10 @@ public function login(Request $request)
             return response()->json(['error' => 'Credenciales inválidas'], 401);
         }
 
-        // Si las credenciales son válidas, genera un token JWT
-        $token = JWTAuth::fromUser($user);
+        // Si las credenciales son válidas, genera un token JWT con el claim personalizado 'tipoUsuario'
+        $token = JWTAuth::claims([
+            'tipoUsuario' => $user->tipoUsuario,
+        ])->fromUser($user);
         
     } catch (JWTException $e) {
         // Si hay un error al crear el token, devuelve un mensaje de error
@@ -64,8 +77,9 @@ public function login(Request $request)
     }
 
     // Si todo está bien, devuelve el token JWT
-    return response()->json(['token' => $token]);
+    return response()->json(['token' => $token], 200);
 }
+
 
 
 public function logout(Request $request)
