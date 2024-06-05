@@ -11,6 +11,8 @@ class Pedidos extends Model
 
     protected $table = 'pedidos';
 
+    public $timestamps = false;
+
     protected $fillable = [
         'idComprador',
         'precio'

@@ -17,8 +17,7 @@ return new class extends Migration
             $table->decimal('precio', 8, 2);
             $table->string('tipo');
             $table->string('modelo');
-            $table->string('imagen')->nullable(); // Ajustar esta columna para almacenar la ruta de la imagen
-            $table->timestamps(); // Asegurar que las marcas de tiempo estén presentes
+            $table->string('imagen')->nullable(); 
         });
     }
 

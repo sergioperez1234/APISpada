@@ -14,8 +14,8 @@ class DetallesPedidos extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'id_pedido',
-        'id_pieza',
+        'idPedido',
+        'idPieza',
         'cantidad'
     ];
 }

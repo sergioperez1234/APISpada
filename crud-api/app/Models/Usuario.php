@@ -25,33 +25,36 @@ class Usuario extends Authenticatable implements JWTSubject
     ];
 
     /**
-     * Automatically hash the password when setting it.
+     * Automáticamente hashea la contraseña al establecerla.
      *
      * @param string $value
      * @return void
      */
     public function setPasswordAttribute($value)
     {
+        // Se establece la contraseña hasheada en el atributo 'password'
         $this->attributes['password'] = bcrypt($value);
     }
 
     /**
-     * Get the identifier that will be stored in the subject claim of the JWT.
+     * Obtiene el identificador que se almacenará en la clave 'subject' del JWT.
      *
      * @return mixed
      */
     public function getJWTIdentifier()
     {
+        // Se devuelve la clave principal del modelo
         return $this->getKey();
     }
 
     /**
-     * Return a key value array, containing any custom claims to be added to the JWT.
+     * Devuelve un array con las reivindicaciones personalizadas que se agregarán al JWT.
      *
      * @return array
      */
     public function getJWTCustomClaims()
     {
+        // No se agregan reivindicaciones personalizadas en este modelo
         return [];
     }
 }
