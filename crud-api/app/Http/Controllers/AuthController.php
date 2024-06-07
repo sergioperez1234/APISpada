@@ -128,14 +128,14 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse El token renovado en formato JSON
      */
-    public function refresh()
-    {
-        // Renueva el token JWT actual
-        // Devuelve el token renovado en formato JSON
-        return response()->json([
-            'token' => JWTAuth::refresh(JWTAuth::getToken())
-        ]);
-    }
+    // public function refresh()
+    // {
+    //     // Renueva el token JWT actual
+    //     // Devuelve el token renovado en formato JSON
+    //     return response()->json([
+    //         'token' => JWTAuth::refresh(JWTAuth::getToken())
+    //     ]);
+    // }
 
     /**
      * Función para obtener los datos del usuario autenticado.

@@ -207,6 +207,45 @@ class UsuarioController extends Controller
         return response()->json($data, 200);
     }
 
+    public function modificarDatos(Request $request, $id){
+
+        $validator = Validator::make($request->all(), [
+            'nombre' => 'required|string|max:50',
+            'telefono' => 'required|digits:9',
+            'direccion' => 'required|string|max:50',
+        ]);
+
+        if ($validator->fails()) {
+            $data = [
+                'status' => 400,
+                'errors' => $validator->errors(),
+                'message' => 'Error de validación de los datos'
+            ];
+            return response()->json($data, 400);
+        }
+
+        $usuario = Usuario::find($id);
+
+        if(!$usuario){
+            $data = [
+                'status' => 404,
+                'message' => 'No se encontró el usuario'
+            ];
+            return response()->json($data, 404);
+        }
+
+        $usuario->nombre = $request->nombre;
+        $usuario->telefono = $request->telefono;
+        $usuario->direccion = $request->direccion;
+        $usuario->save();
+
+        $data = [
+            'status' => 200,
+            'message' => 'Usuario actualizado correctamente'
+        ];
+        return response()->json($data, 200);
+    }
+
     /**
      * Función para el inicio de sesión de usuarios.
      *
@@ -282,4 +321,30 @@ class UsuarioController extends Controller
             return response()->json(['error' => 'Token inválido'], 401);
         }
     }
+
+    public function esAdmin(Request $request)
+    {
+        try {
+            // Obtiene el token del request
+            $token = $request->bearerToken();
+            
+            // Decodifica el token para obtener sus atributos
+            $payload = JWTAuth::setToken($token)->getPayload();
+
+            // Obtiene el atributo tipoUsuario del payload
+            $tipoUsuario = $payload->get('tipoUsuario');
+
+            // Verifica si tipoUsuario es booleano y devuelve su valor en formato JSON
+            if (is_bool($tipoUsuario)) {
+                return response()->json(['tipoUsuario' => $tipoUsuario], 200);
+            } else {
+                // Si tipoUsuario no es booleano, devuelve un mensaje de error
+                return response()->json(['error' => 'tipoUsuario no es un valor booleano'], 400);
+            }
+        } catch (JWTException $e) {
+            // Si el token es inválido, devuelve un mensaje de error
+            return response()->json(['error' => 'Token inválido'], 401);
+        }
+    }
+
 }

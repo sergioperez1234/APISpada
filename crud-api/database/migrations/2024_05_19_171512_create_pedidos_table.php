@@ -16,7 +16,6 @@ return new class extends Migration
             $table->unsignedBigInteger('idComprador')->nullable();
             $table->integer('precio')->nullable();
             $table->foreign('idComprador')->references('id')->on('usuarios');
-            $table->timestamps();
         });
     }
 
