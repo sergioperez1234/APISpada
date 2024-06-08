@@ -16,7 +16,7 @@ Route::put('/usuarios/{id}', [UsuarioController::class, 'update']); // Actualiza
 Route::delete('/usuarios/{id}', [UsuarioController::class, 'destroy']); // Eliminar un usuario
 Route::get('/es-admin', [UsuarioController::class, 'esAdmin']); // Verificar si el usuario es administrador
 Route::get('/token-attributes', [UsuarioController::class, 'getTokenAttributes']); // Obtener atributos del token
-Route::get('/modificar-usuario/{id}', [UsuarioController::class, 'modificarDatos']); 
+Route::put('/modificar-usuario/{id}', [UsuarioController::class, 'modificarDatos']); 
 
 //detallesPedidos
 Route::get('/detallesPedidos', [detallesPedidosController::class, 'index']); // Obtener todos los detalles de pedido

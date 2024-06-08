@@ -236,11 +236,12 @@ class piezasController extends Controller
      * @param int $id El id de la pieza a eliminar
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id){
+    public function destroy(Request $request)
+    {
         // Buscar la pieza con el id proporcionado
-        $piezas = Piezas::find($id);
+        $piezas = Piezas::find($request->id);
         // Si no se encuentra la pieza, devolver un mensaje de error con el estado HTTP 404
-        if(!$piezas){
+        if (!$piezas) {
             $data = [
                 'status' => 404,
                 'message' => 'No se encontro la pieza'
@@ -257,6 +258,7 @@ class piezasController extends Controller
         ];
         return response()->json($data, 200);
     }
+
 
     /**
      * Esta función actualiza una pieza en la base de datos a partir de su id y los datos recibidos en el cuerpo de la solicitud.

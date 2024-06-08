@@ -16,7 +16,8 @@ class UsuarioController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(){
+    public function index()
+    {
         // Obtiene todos los usuarios
         $usuarios = Usuario::all();
 
@@ -44,7 +45,8 @@ class UsuarioController extends Controller
      * @param \Illuminate\Http\Request $request La solicitud HTTP con los datos del usuario
      * @return \Illuminate\Http\JsonResponse La respuesta en formato JSON con el estado del proceso
      */
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         // Valida los datos del usuario
         $validator = Validator::make($request->all(), [
             'nombre' => 'required|string|max:50',
@@ -99,12 +101,13 @@ class UsuarioController extends Controller
      * @param int $id El ID del usuario a mostrar
      * @return \Illuminate\Http\JsonResponse El usuario en formato JSON
      */
-    public function show($id){
+    public function show($id)
+    {
         // Busca el usuario por ID
         $usuario = Usuario::find($id);
 
         // Si no se encontró el usuario, devuelve un error en formato JSON
-        if(!$usuario){
+        if (!$usuario) {
             $data = [
                 'status' => 404,
                 'message' => 'No se encontró el usuario'
@@ -126,12 +129,13 @@ class UsuarioController extends Controller
      * @param int $id El ID del usuario a eliminar
      * @return \Illuminate\Http\JsonResponse El estado de la operación en formato JSON
      */
-    public function destroy($id){
+    public function destroy($id)
+    {
         // Busca el usuario por ID
         $usuario = Usuario::find($id);
 
         // Si no se encontró el usuario, devuelve un error en formato JSON
-        if(!$usuario){
+        if (!$usuario) {
             $data = [
                 'status' => 404,
                 'message' => 'No se encontró el usuario'
@@ -155,12 +159,13 @@ class UsuarioController extends Controller
      * @param int $id El ID del usuario a actualizar
      * @return \Illuminate\Http\JsonResponse El estado de la operación en formato JSON
      */
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         // Busca el usuario por ID
         $usuario = Usuario::find($id);
 
         // Si no se encontró el usuario, devuelve un error en formato JSON
-        if(!$usuario){
+        if (!$usuario) {
             $data = [
                 'status' => 404,
                 'message' => 'No se encontró el usuario'
@@ -171,7 +176,7 @@ class UsuarioController extends Controller
         // Valida los datos del usuario
         $validator = Validator::make($request->all(), [
             'nombre' => 'required|string|max:50',
-            'email' => 'required|string|email|max:50|unique:usuarios,email,'.$id,
+            'email' => 'required|string|email|max:50|unique:usuarios,email,' . $id,
             'password' => 'required|string|min:6|max:16',
             'telefono' => 'required|digits:9',
             'tipoUsuario' => 'required|boolean', // Cambiado a boolean
@@ -207,12 +212,15 @@ class UsuarioController extends Controller
         return response()->json($data, 200);
     }
 
-    public function modificarDatos(Request $request, $id){
+    public function modificarDatos(Request $request)
+    {
 
+        echo $request->id;
         $validator = Validator::make($request->all(), [
             'nombre' => 'required|string|max:50',
             'telefono' => 'required|digits:9',
             'direccion' => 'required|string|max:50',
+            'id' => 'required|integer'
         ]);
 
         if ($validator->fails()) {
@@ -224,9 +232,9 @@ class UsuarioController extends Controller
             return response()->json($data, 400);
         }
 
-        $usuario = Usuario::find($id);
+        $usuario = Usuario::find($request->id);
 
-        if(!$usuario){
+        if (!$usuario) {
             $data = [
                 'status' => 404,
                 'message' => 'No se encontró el usuario'
@@ -252,7 +260,8 @@ class UsuarioController extends Controller
      * @param Request $request La solicitud HTTP con los datos del usuario (email y contraseña)
      * @return \Illuminate\Http\JsonResponse La respuesta en formato JSON con el estado del proceso
      */
-    public function login(Request $request){
+    public function login(Request $request)
+    {
         // Valida los datos del usuario
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email|max:50',
@@ -307,7 +316,7 @@ class UsuarioController extends Controller
         try {
             // Obtiene el token del request
             $token = $request->bearerToken();
-            
+
             // Decodifica el token para obtener sus atributos
             $payload = JWTAuth::setToken($token)->getPayload();
 
@@ -327,7 +336,7 @@ class UsuarioController extends Controller
         try {
             // Obtiene el token del request
             $token = $request->bearerToken();
-            
+
             // Decodifica el token para obtener sus atributos
             $payload = JWTAuth::setToken($token)->getPayload();
 
@@ -335,7 +344,7 @@ class UsuarioController extends Controller
             $tipoUsuario = $payload->get('tipoUsuario');
 
             // Verifica si tipoUsuario es booleano y devuelve su valor en formato JSON
-            if (is_bool($tipoUsuario)) {
+            if (is_int($tipoUsuario)) {
                 return response()->json(['tipoUsuario' => $tipoUsuario], 200);
             } else {
                 // Si tipoUsuario no es booleano, devuelve un mensaje de error
@@ -347,4 +356,4 @@ class UsuarioController extends Controller
         }
     }
 
-}
+} 

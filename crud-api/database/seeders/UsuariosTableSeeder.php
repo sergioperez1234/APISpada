@@ -22,7 +22,7 @@ class UsuariosTableSeeder extends Seeder
             ],
             [
                 'nombre' => 'Maria Gomez',
-                'password' => Hash::make('password123'),
+                'password' => Hash::make('password1234#'),
                 'email' => 'user@gmail.com',
                 'direccion' => '456 Avenida Siempre Viva',
                 'telefono' => '987654321',
