@@ -254,51 +254,6 @@ class UsuarioController extends Controller
         return response()->json($data, 200);
     }
 
-    /**
-     * Función para el inicio de sesión de usuarios.
-     *
-     * @param Request $request La solicitud HTTP con los datos del usuario (email y contraseña)
-     * @return \Illuminate\Http\JsonResponse La respuesta en formato JSON con el estado del proceso
-     */
-    public function login(Request $request)
-    {
-        // Valida los datos del usuario
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|string|email|max:50',
-            'password' => 'required|string|min:6|max:16',
-        ]);
-
-        // Si hay errores de validación, devuelve un error en formato JSON
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => 400,
-                'errors' => $validator->errors(),
-                'message' => 'Error de validación de los datos'
-            ], 400);
-        }
-
-        // Obtiene los datos del usuario
-        $email = $request->email;
-        $password = $request->password;
-
-        // Busca al usuario por su dirección de correo electrónico
-        $usuario = Usuario::where('email', $email)->first();
-
-        // Verifica si se encontró un usuario y si la contraseña coincide
-        if (!$usuario || !Hash::check($password, $usuario->password)) {
-            // Si las credenciales no coinciden, devuelve un mensaje de error
-            return response()->json([
-                'status' => 404,
-                'message' => 'No se encontró el usuario o la contraseña es incorrecta'
-            ], 404);
-        }
-
-        // Si todo está bien, devuelve el usuario encontrado en formato JSON
-        return response()->json([
-            'status' => 200,
-            'usuario' => $usuario
-        ], 200);
-    }
 
     /**
      * Obtiene los atributos de un token JWT

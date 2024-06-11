@@ -360,5 +360,4 @@ class piezasController extends Controller
         ];
         return response()->json($data, 200);
     }
-
 }

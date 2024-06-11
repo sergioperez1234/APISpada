@@ -31,6 +31,8 @@ Route::get('/pedidos/{id}', [pedidosController::class, 'show']); // Obtener un p
 Route::post('/pedidos', [pedidosController::class, 'store']); // Crear un pedido
 Route::put('/pedidos/{id}', [pedidosController::class, 'update']); // Actualizar un pedido
 Route::delete('/pedidos/{id}', [pedidosController::class, 'destroy']); // Eliminar un pedido
+Route::get('/pedidos/usuario', [pedidosController::class, 'obtenerPedidosUsuarios'])->middleware('auth:api'); // Obtener pedidos de un usuario
+
 
 //piezas
 Route::get('/piezas', [piezasController::class, 'index']); // Obtener todas las piezas

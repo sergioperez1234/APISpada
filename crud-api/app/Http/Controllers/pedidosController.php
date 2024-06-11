@@ -193,4 +193,28 @@ class pedidosController extends Controller
             'precio' => $request->precio
         ]);
     }
+
+    public function obtenerPedidosUsuarios(Request $request)
+    {
+        try {
+            // Obtiene el token del request
+            $token = $request->bearerToken();
+
+            // Decodifica el token para obtener sus atributos
+            $payload = JWTAuth::setToken($token)->getPayload();
+
+            // Obtiene el id del usuario (asumiendo que es 'sub')
+            $idUsuario = $payload->get('sub');
+
+            // Obtiene los pedidos del usuario
+            $pedidos = pedidos::where('idUsuario', $idUsuario)->get();
+
+            // Devuelve los pedidos en formato JSON
+            return response()->json(['pedidos' => $pedidos], 200);
+
+        } catch (JWTException $e) {
+            // Si el token es inválido, devuelve un mensaje de error
+            return response()->json(['error' => 'Token inválido'], 401);
+        }
+    }
 }
